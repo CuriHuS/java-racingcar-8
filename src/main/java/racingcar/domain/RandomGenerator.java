@@ -2,12 +2,12 @@ package racingcar.domain;
 
 import camp.nextstep.edu.missionutils.Randoms;
 
-public class RandomMaker {
+public class RandomGenerator {
 
-    public RandomMaker() {
+    public RandomGenerator() {
     }
 
-    public int makeRandomNumber(int min, int max) {
+    public int generateRandomNumber(int min, int max) {
         return Randoms.pickNumberInRange(min, max);
     }
 
