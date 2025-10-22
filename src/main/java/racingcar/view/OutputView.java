@@ -32,7 +32,14 @@ public class OutputView {
         return POSITION_SYMBOL.repeat(position);
     }
 
-    public void printWinners(List<String> winners) {
-        System.out.println("최종 우승자 : " + String.join(WINNER_DELIMITER, winners));
+    public void printWinners(List<Car> winners) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < winners.size(); i++) {
+            result.append(winners.get(i).getName());
+            if (i != winners.size() - 1) {
+                result.append(WINNER_DELIMITER);
+            }
+        }
+        System.out.println("최종 우승자 : " + result);
     }
 }
