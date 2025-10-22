@@ -31,6 +31,10 @@ public class Racing {
         }
     }
 
+    public List<Car> getJoinCars() {
+        return joinCars;
+    }
+
     /**
      * 해당 레이싱의 현재 시점 우승자를 나타낸다.
      */
