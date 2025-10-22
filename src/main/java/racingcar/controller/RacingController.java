@@ -11,6 +11,7 @@ import racingcar.view.OutputView;
 public class RacingController {
     private final InputView inputView;
     private final OutputView outputView;
+    private static final int MAX_NAME_LENGTH = 5;
 
     public RacingController() {
         this.inputView = new InputView();
@@ -26,13 +27,21 @@ public class RacingController {
 
         Racing race = new Racing(cars);
         playRacing(race, roundCount);
-        
+
         printWinners(race.getWinners());
     }
+
+    private void validateNameLength(String name) {
+        if (name.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException();
+        }
+    }
+
 
     private List<Car> formatCarList(List<String> carNames) {
         List<Car> cars = new ArrayList<>();
         for (String carName : carNames) {
+            validateNameLength(carName);
             Car car = new Car(carName, new RandomGenerator(), 0);
             cars.add(car);
         }
