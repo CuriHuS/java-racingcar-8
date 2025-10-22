@@ -2,12 +2,12 @@ package racingcar.domain;
 
 public class Car {
     private String name;
-    private RandomMaker engine;
+    private RandomGenerator engine;
     private int position;
 
-    public Car(String name, RandomMaker maker, int position) {
+    public Car(String name, RandomGenerator generator, int position) {
         this.name = name;
-        this.engine = maker;
+        this.engine = generator;
         this.position = position;
     }
 
@@ -20,7 +20,7 @@ public class Car {
     }
 
     public void move() {
-        if (engine.makeRandomNumber(0, 9) >= 4) {
+        if (engine.generateRandomNumber(0, 9) >= 4) {
             this.position++;
         }
     }
