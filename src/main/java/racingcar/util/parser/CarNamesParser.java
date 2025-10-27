@@ -10,7 +10,6 @@ public class CarNamesParser {
     public List<String> parse(String input) {
         validateInput(input);
         return Arrays.stream(input.split(DELIMITER))
-                .map(String::trim)
                 .collect(Collectors.toList());
     }
 
