@@ -1,29 +1,32 @@
 package racingcar.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import racingcar.domain.Car;
 import racingcar.domain.Racing;
 import racingcar.domain.RandomGenerator;
+import racingcar.util.parser.CarNamesParser;
+import racingcar.util.validator.CarNameValidator;
 import racingcar.view.InputView;
 import racingcar.view.OutputView;
 
 public class RacingController {
     private final InputView inputView;
     private final OutputView outputView;
+    private final CarNamesParser parser;
+    private final CarNameValidator validator;
     private static final int MAX_NAME_LENGTH = 5;
 
     public RacingController() {
         this.inputView = new InputView();
         this.outputView = new OutputView();
+        this.parser = new CarNamesParser();
+        this.validator = new CarNameValidator();
     }
 
     public void run() {
-        String carNamesString = inputView.readCarNames();
-        List<String> carNames = parseCarNames(carNamesString);
+        List<Car> cars = createCars();
         int roundCount = Integer.parseInt(inputView.readRoundCount());
-
-        List<Car> cars = formatCarList(carNames);
 
         Racing race = new Racing(cars);
         playRacing(race, roundCount);
@@ -31,29 +34,14 @@ public class RacingController {
         printWinners(race.getWinners());
     }
 
-    private void validateNameLength(String name) {
-        if (name.length() > MAX_NAME_LENGTH) {
-            throw new IllegalArgumentException();
-        }
-    }
+    private List<Car> createCars() {
+        String carNamesString = inputView.readCarNames();
+        List<String> carNames = parser.parse(carNamesString);
+        validator.validateAll(carNames);
 
-
-    private List<Car> formatCarList(List<String> carNames) {
-        List<Car> cars = new ArrayList<>();
-        for (String carName : carNames) {
-            validateNameLength(carName);
-            Car car = new Car(carName, new RandomGenerator(), 0);
-            cars.add(car);
-        }
-        return cars;
-    }
-
-    private List<String> parseCarNames(String carNames) {
-        List<String> carNamesList = new ArrayList<>();
-        for (String carName : carNames.split(",")) {
-            carNamesList.add(carName);
-        }
-        return carNamesList;
+        return carNames.stream()
+                .map(name -> new Car(name, new RandomGenerator(), 0))
+                .collect(Collectors.toList());
     }
 
     private void playRacing(Racing racing, int roundCount) {
