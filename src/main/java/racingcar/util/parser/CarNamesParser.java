@@ -14,6 +14,9 @@ public class CarNamesParser {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 입력으로 null 혹은 빈 문자열이 입력되는 지 검증합니다.
+     */
     private void validateInput(String input) {
         if (input == null || input.trim().isEmpty()) {
             throw new IllegalArgumentException("자동차 이름 입력이 비어있습니다.");

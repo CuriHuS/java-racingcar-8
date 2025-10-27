@@ -7,6 +7,7 @@ import racingcar.domain.Racing;
 import racingcar.domain.RandomGenerator;
 import racingcar.util.parser.CarNamesParser;
 import racingcar.util.validator.CarNameValidator;
+import racingcar.util.validator.RoundCountValidator;
 import racingcar.view.InputView;
 import racingcar.view.OutputView;
 
@@ -15,6 +16,7 @@ public class RacingController {
     private final OutputView outputView;
     private final CarNamesParser parser;
     private final CarNameValidator validator;
+    private final RoundCountValidator roundCountValidator;
     private static final int MAX_NAME_LENGTH = 5;
 
     public RacingController() {
@@ -22,11 +24,12 @@ public class RacingController {
         this.outputView = new OutputView();
         this.parser = new CarNamesParser();
         this.validator = new CarNameValidator();
+        this.roundCountValidator = new RoundCountValidator();
     }
 
     public void run() {
         List<Car> cars = createCars();
-        int roundCount = Integer.parseInt(inputView.readRoundCount());
+        int roundCount = readRoundCount();
 
         Racing race = new Racing(cars);
         playRacing(race, roundCount);
@@ -51,6 +54,21 @@ public class RacingController {
         }
     }
 
+    private int readRoundCount() {
+        String input = inputView.readRoundCount();
+        int roundCount = parseRoundCount(input);
+        roundCountValidator.validate(roundCount);
+        return roundCount;
+    }
+
+    private int parseRoundCount(String input) {
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("라운드 횟수는 숫자여야 합니다.");
+        }
+    }
+
     public void printResults(List<Car> cars) {
         outputView.printRoundResult(cars);
     }
@@ -58,5 +76,4 @@ public class RacingController {
     public void printWinners(List<Car> winners) {
         outputView.printWinners(winners);
     }
-
 }

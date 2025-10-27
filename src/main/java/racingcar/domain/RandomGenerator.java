@@ -10,5 +10,4 @@ public class RandomGenerator {
     public int generateRandomNumber(int min, int max) {
         return Randoms.pickNumberInRange(min, max);
     }
-
 }
